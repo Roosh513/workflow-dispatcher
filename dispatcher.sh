@@ -3,11 +3,11 @@
 
 function trigger_workflow {
   echo "Triggering ${INPUT_EVENT_TYPE} in ${INPUT_OWNER}/${INPUT_REPO}"
-  resp=$(curl -X POST -s "https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/dispatches" \
+  resp=$(curl -X POST -s "https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/workflows/${INPUT_WORKFLOW_FILE}/dispatches" \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer ${INPUT_TOKEN}" \
-    -d "{\"event_type\": \"${INPUT_EVENT_TYPE}\", \"client_payload\": ${INPUT_CLIENT_PAYLOAD} }")
+    -d "{\"event_type\": \"${INPUT_EVENT_TYPE}\", \"input\": ${INPUT_CLIENT_PAYLOAD} }")
   # If the response from the GitHub API is null, i.e., HTTP 204, then the request was successful. Wait for 2 seconds and proceed.
   if [ -z "$resp" ]
   then
@@ -26,7 +26,7 @@ function find_workflow {
   do
     counter=$(( counter + 1 ))
     # The GitHub API returns an ordered list of triggered workflows by time, newest first. Get the first object from the list.
-    workflow=$(curl -s "https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/runs?event=repository_dispatch" \
+    workflow=$(curl -s "https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/runs?event=workflow_dispatch" \
       -H "Accept: application/vnd.github.v3+json" \
       -H "Authorization: Bearer ${INPUT_TOKEN}" | jq '.workflow_runs[0]')
     # Get the created_at value from the first workflow in the list.

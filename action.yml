@@ -11,11 +11,15 @@ inputs:
   repo:
     description: 'Name of the GitHub repo'
     required: true
+  repo_ref:
+    description: 'Specify the github reference where the workflow lives.'
+    default: master
+    required: false
   token:
     description: 'Access token (PAT) for the repo'
     required: true
-  event_type:
-    description: 'The event type of the repository dispatch'
+  workflow_file_name:
+    description: 'The workflow file name of the repository dispatch'
     required: true
   client_payload:
     description: 'Payload for the repository dispatch event'
@@ -44,10 +48,11 @@ runs:
         ${{ github.action_path }}/dispatcher.sh
       shell: bash
       env:
-        INPUT_EVENT_TYPE: ${{ inputs.event_type }}
+        INPUT_WORKFLOW_FILE: ${{ inputs.workflow_file_name }}
         INPUT_OWNER: ${{ inputs.owner }}
         INPUT_REPO: ${{ inputs.repo }}
         INPUT_TOKEN: ${{ inputs.token }}
         INPUT_CLIENT_PAYLOAD: ${{ inputs.client_payload }}
         INPUT_WAIT_TIME: ${{ inputs.wait_time }}
         INPUT_MAX_TIME: ${{ inputs.max_time }}
+        INPUT_REPO_REF: ${{ inputs.repo_ref }}
