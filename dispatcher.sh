@@ -2,12 +2,12 @@
 # Triggers a GitHub Action Workflow using the dispatches API, then waits for the Workflow to complete. All values are read from environment variables.
 
 function trigger_workflow {
-  echo "Triggering ${INPUT_EVENT_TYPE} in ${INPUT_OWNER}/${INPUT_REPO}"
+  echo "Triggering ${INPUT_EVENT_TYPE} in ${INPUT_OWNER}/${INPUT_REPO} on ref ${INPUT_REPO_REF}"
   resp=$(curl -X POST -s "https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/workflows/${INPUT_WORKFLOW_FILE}/dispatches" \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer ${INPUT_TOKEN}" \
-    -d "{\"event_type\": \"${INPUT_EVENT_TYPE}\", \"input\": ${INPUT_CLIENT_PAYLOAD} }")
+    -d "{\"ref\": \"${INPUT_REPO_REF}\", \"inputs\": ${INPUT_CLIENT_PAYLOAD} }")
   # If the response from the GitHub API is null, i.e., HTTP 204, then the request was successful. Wait for 2 seconds and proceed.
   if [ -z "$resp" ]
   then
