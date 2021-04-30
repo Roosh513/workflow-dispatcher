@@ -60,4 +60,4 @@ runs:
         INPUT_CLIENT_PAYLOAD: ${{ inputs.client_payload }}
         INPUT_WAIT_TIME: ${{ inputs.wait_time }}
         INPUT_MAX_TIME: ${{ inputs.max_time }}
-          INPUT_REPO_REF: ${{ inputs.repo_ref }}
+        INPUT_REPO_REF: ${{ inputs.repo_ref }}
