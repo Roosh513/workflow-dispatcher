@@ -20,7 +20,7 @@ inputs:
     required: true
   workflow_file_name:
     description: 'The workflow file name of the repository dispatch'
-    required: true
+    required: false
   client_payload:
     description: 'Payload for the repository dispatch event'
     default: "{}"
@@ -45,7 +45,12 @@ runs:
   steps:
     - id: dispatch
       run: |
-        ${{ github.action_path }}/dispatcher.sh
+        if [ "${{ inputs.workflow_file_name === ''}} == "" " ]
+        then
+          ${{ github.action_path }}/dispatcher.sh
+        else
+          ${{ github.action_path }}/workflow_dispatcher.sh
+        fi
       shell: bash
       env:
         INPUT_WORKFLOW_FILE: ${{ inputs.workflow_file_name }}
@@ -55,4 +60,4 @@ runs:
         INPUT_CLIENT_PAYLOAD: ${{ inputs.client_payload }}
         INPUT_WAIT_TIME: ${{ inputs.wait_time }}
         INPUT_MAX_TIME: ${{ inputs.max_time }}
-        INPUT_REPO_REF: ${{ inputs.repo_ref }}
+          INPUT_REPO_REF: ${{ inputs.repo_ref }}
