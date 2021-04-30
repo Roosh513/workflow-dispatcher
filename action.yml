@@ -45,7 +45,7 @@ runs:
   steps:
     - id: dispatch
       run: |
-        if [ "${{ inputs.workflow_file_name === ''}} == "" " ]
+        if [ "${{ inputs.workflow_file_name == ''}} == "" " ]
         then
           ${{ github.action_path }}/dispatcher.sh
         else
