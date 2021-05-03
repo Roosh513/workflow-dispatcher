@@ -23,7 +23,7 @@ When creating a workflow which deploys an entire distributed application in one 
     * The scope of the default GitHub token is limited to the current repository only. Hence, it cannot be used.
     * The PAT should have access to run workflows in the target repository.
     * GitHub guide for creating a PAT is available [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token).
-* Preferably, use this Action on a GitHub hosted runner. This is needed for avoiding issues arising from inconsistencies between timestamps returned from the runner and the GitHub API. This will not be a concern if the system clock on the self-hosted runner is accurate. 
+* Preferably, use this Action on a GitHub hosted runner. This is needed for avoiding issues arising from inconsistencies between timestamps returned from the runner and the GitHub API. This will not be a concern if the system clock on the self-hosted runner is accurate.
 
 ## Inputs
 
@@ -36,6 +36,7 @@ When creating a workflow which deploys an entire distributed application in one 
 | `wait_time`       | False      | `10`      | The number of seconds delay between checking for the result of the target workflow. |
 | `max_time`        | False      | `600`    | Maximum amount of time to wait for workflow to complete (seconds). |
 | `client_payload`  | False      | `"{}"`    | Payload for the repository dispatch event. Usually used for passing a Git Ref to the target workflow. |
+| `workflow_file_name` | False | `null` | Specific workflow file name to be executed. If left empty, the event_type must be supplied.
 
 ## Outputs
 
