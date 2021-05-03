@@ -1,6 +1,6 @@
 name: 'Workflow Dispatcher'
 description: 'Trigger a GitHub Action Workflow in a separate repo, show the link and wait for it to finish.'
-author: 'Aditya Kar'
+author: 'Aditya Kar, Chris Roush'
 branding:
   icon: 'fast-forward'
   color: 'blue'
@@ -18,6 +18,9 @@ inputs:
   token:
     description: 'Access token (PAT) for the repo'
     required: true
+  event_type:
+    description: 'The event type of the repository dispatch'
+    required: false
   workflow_file_name:
     description: 'The workflow file name of the repository dispatch'
     required: false
@@ -45,11 +48,14 @@ runs:
   steps:
     - id: dispatch
       run: |
-        if [ "${{ inputs.workflow_file_name }}" == "" ]
+        if [ "${{ inputs.workflow_file_name }}" == "" ] && [ "${{ inputs.event_type }}" != "" ]
         then
           ${{ github.action_path }}/dispatcher.sh
-        else
+        elif [ "${{ inputs.workflow_file_name }}" == "" ]
           ${{ github.action_path }}/workflow_dispatcher.sh
+        else
+          echo "Must specify workflow_file_name or event_type"
+          exit 1
         fi
       shell: bash
       env:
