@@ -48,10 +48,9 @@ runs:
   steps:
     - id: dispatch
       run: |
-        if [ "${{ inputs.workflow_file_name }}" == "" ] && [ "${{ inputs.event_type }}" != "" ]
-        then
+        if [ "${{ inputs.workflow_file_name }}" == "" ] && [ "${{ inputs.event_type }}" != "" ]; then
           ${{ github.action_path }}/dispatcher.sh
-        elif [ "${{ inputs.workflow_file_name }}" == "" ]
+        elif [ "${{ inputs.workflow_file_name }}" == "" ]; then
           ${{ github.action_path }}/workflow_dispatcher.sh
         else
           echo "Must specify workflow_file_name or event_type"
