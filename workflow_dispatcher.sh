@@ -25,8 +25,12 @@ function find_workflow {
   while true
   do
     counter=$(( counter + 1 ))
+    workflow_id=$(curl -s "https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/workflows/${INPUT_WORKFLOW_FILE}" \
+      -H "Accept: application/vnd.github.v3+json" \
+      -H "Authorization: Bearer ${INPUT_TOKEN}" | jq '.id')
+
     # The GitHub API returns an ordered list of triggered workflows by time, newest first. Get the first object from the list.
-    workflow=$(curl -s "https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/runs?event=workflow_dispatch" \
+    workflow=$(curl -s "https://api.github.com/repos/${INPUT_OWNER}/${INPUT_REPO}/actions/runs?event=workflow_dispatch&workflow_id=${workflow_id}" \
       -H "Accept: application/vnd.github.v3+json" \
       -H "Authorization: Bearer ${INPUT_TOKEN}" | jq '.workflow_runs[0]')
     # Get the created_at value from the first workflow in the list.
